@@ -7,4 +7,14 @@ client.once('ready', () => {
 	console.log('Ready');
 });
 
+client.on('interactionCreate', async (interaction) => {
+	if (!interaction.isCommand()) return;
+
+	const { commandName } = interaction;
+
+	if (commandName === 'generate-qr-code') {
+		await interaction.reply('This is a test reply');
+	}
+});
+
 client.login(token);
