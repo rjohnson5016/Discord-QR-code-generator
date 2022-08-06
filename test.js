@@ -7,10 +7,19 @@ const data = {
 };
 
 const stringData = JSON.stringify(data);
-
-QRCode.toDataURL(stringData, function (error, code) {
+const generateQRCode = (phrase) => {
+	const qrcode = QRCode.toFile('/tmp/generated_qr_code.png', phrase, (error) => {
+		if (error) {
+			console.log(error);
+		}
+	});
+	return qrcode;
+};
+const qrcode = QRCode.toFile('/tmp/test_qr_code.png', 'www.google.com', (error) => {
 	if (error) {
 		console.log(error);
 	}
-	console.log(code);
 });
+
+console.log(typeof qrcode);
+console.log(stringData);

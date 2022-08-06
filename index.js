@@ -8,14 +8,19 @@ client.once('ready', () => {
 	console.log('Ready');
 });
 
-client.on('interactionCreate', (interaction) => {
-	const embed = new MessageEmbed().setTitle('Hi, I dog!');
-	qrcode = QRCode.toDataURL('www.google.com', function (error, code) {
+const generateQRCode = (phrase) => {
+	const filepath = '/tmp/generated_qr_code.png';
+	QRCode.toFile(filepath, phrase, (error) => {
 		if (error) {
 			console.log(error);
 		}
-		return code;
 	});
+	return filepath;
+};
+
+client.on('interactionCreate', (interaction) => {
+	const embed = new MessageEmbed().setTitle('QRCode for Google');
+	const qrcode = generateQRCode('www.google.com/news');
 
 	if (!interaction.isCommand()) return;
 
@@ -24,7 +29,7 @@ client.on('interactionCreate', (interaction) => {
 	if (commandName === 'generate-qr-code') {
 		interaction.channel.send({
 			embeds: [embed],
-			files: ['./dog_pic.jpeg'],
+			files: [qrcode],
 		});
 	}
 });
