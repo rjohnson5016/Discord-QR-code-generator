@@ -18,18 +18,19 @@ const generateQRCode = (phrase) => {
 	return filepath;
 };
 
-client.on('interactionCreate', (interaction) => {
-	const embed = new MessageEmbed().setTitle('QRCode for Google');
-	const qrcode = generateQRCode('www.google.com/news');
-
+client.on('interactionCreate', async (interaction) => {
 	if (!interaction.isCommand()) return;
 
+	await interaction.deferReply();
 	const { commandName } = interaction;
+	const input = interaction.options.getString('input');
+	const qrcodePath = await generateQRCode(input);
+	const embed = new MessageEmbed().setTitle(`QRCode for ${input}`);
 
 	if (commandName === 'generate-qr-code') {
-		interaction.channel.send({
+		await interaction.channel.send({
 			embeds: [embed],
-			files: [qrcode],
+			files: [qrcodePath],
 		});
 	}
 });

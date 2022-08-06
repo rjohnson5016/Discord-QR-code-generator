@@ -6,7 +6,10 @@ const { clientId, guildId, token } = require('./config.json');
 const commands = [
 	new SlashCommandBuilder()
 		.setName('generate-qr-code')
-		.setDescription('This command will generate a QR code for the argument provided.'),
+		.setDescription('This command will generate a QR code for the argument provided.')
+		.addStringOption((option) =>
+			option.setName('input').setDescription('This argument takes a string and returns a QR code.').setRequired(true)
+		),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(token);
